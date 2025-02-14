@@ -1,0 +1,26 @@
+
+
+Difference Between AMIs & Snapshots:
+
+AMIs:
+------
+ - AMIs always associated with EC2(Instances), which are virtual servers
+ - AMIs , which is copy the entire EC2 instances along with the volumes of data.
+    which includes not only the data, but also the operating system,configuration and 
+    metadata required to launch the Identical or recreate the EC2 instance.
+- AMIs which are used to store the entire configuration of EC2 instance, which is helps
+  us to launch the idential setup of new EC2 instance.
+
+- AMIs Compatibility like, it can be created for both EBS-backed and non-EBS-backup instances.
+
+
+
+Snapshots:
+---------------
+ - Snapshots are associated with EBS volumes, which are used to store the data.
+ - Snapshots are essential backup of the data stored in EBS volumes.
+ - They capture the data to a specific point in time and can be used to create new volumes
+    or restore the data.
+- Snapshots majorly we are used to store for data backup, disaster recorvery and data migration.
+- Snapshots can be taken only EBS-backup instances
+

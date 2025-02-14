@@ -1,0 +1,228 @@
+AMIs(Amazon Machine Image)  and Snapshots
+
+What are  AWS Snapshots?
+
+EBS Snapshots are a point-in-time copy of your data, and can be used to enable disaster recovery, 
+migrate data across regions and accounts, and improve backup compliance
+
+Snapshots are generally created for data protection, but they can also be used for testing application software and data mining. 
+A storage snapshot can be used for disaster recovery (DR) when information is lost due to human error.
+
+
+Amazon Elastic Block Store (Amazon EBS) is a service that provides persistent block-level storage for 
+Amazon Elastic Compute Cloud (Amazon EC2) instances. 
+
+Snapshot technology has been integral to protecting data both in the on-prem data center and in the cloud. 
+AWS snapshots come in the form of Amazon Elastic Block Storage snapshots or EBS Snapshots
+
+	-An EBS snapshot is a backup of a single EBS volume
+	-An AMI image is a backup of an entire EC2 instance.
+
+	-EBS snapshots are the backups of the individual EBS volumes attached to the EC2 instance 
+	  at the time the AMI image was created
+	-Snapshots are useful for backing up data at different intervals, which allows information to be recovered from different periods of time
+	-Many backup programs that create snapshots also allow specific files to be recovered from the snapshot, instead of having to restore the                    	 	 	  complete  backup.
+
+
+Snapshots can be used to create a backup of critical workloads, such as a large database or a file system that spans across multiple EBS volumes. 
+
+A snapshot is a base feature for creating backups of your EBS volumes. A snapshot takes a copy of the EBS volume and places it in Amazon S3, where it is stored redundantly in multiple Availability Zones. The initial snapshot is a full copy of the volume; ongoing snapshots store incremental block-level changes only.
+
+
+
+Difference between snapshot and AMI(image) in AWS?
+
+A snapshot is a backup of an EBS volume. An AMI (Amazon Machine Image) is a clone of the entire EC2 instance including licenses.
+An AMI created from an EC2 instance includes snapshots of the root volume and any other attached EBS volumes
+
+One of the very useful features of Amazon EBS is creating snapshots of EBS volumes. According to Amazon Knowledge Base, AWS EBS snapshots are backups of EBS volumes. 
+
+
+Backup Tools:
+===========
+	Veritas net backup, 
+	emc networker,
+	covalt galaxy
+
+We used to take the backups for 
+	-EC2 Instances
+	-Databases
+	-RDS
+Using Snapshots we used to take the backups.
+
+EC2-Instance
+
+	-Generally we have two types of volumes
+		1.RootVolume  -by default root volume is created when we are launch the instance.
+		2. DataVolume -EBS, Instance Store 
+
+1.Launch the EC2 Instance 
+	t2.micro
+	
+		Volume type= root (This is OS in AWS)
+
+		Add Extra Volumes
+		click on <Add Volume> 
+		  Volumetype=EBS
+		   size =2GB
+		
+		  Volumetype=EBS
+		   size=4GB
+
+(Note:we can select the checkbox of 'Delete on Termination', which meants when you terminate the system, it will delete these volumes as well.
+	if we are not selecting this, it will delete only EC2-Instance root volume,  not EBS volumes. But if we forgot to delete the volumes explicitly,then it will be                         charged)
+
+Launch the machine with other defaults.
+	No need to provide the PrimaryIP
+
+2. Now, connect to the EC2 instance through SSH
+	-Need to format the volumes and create file system, mount
+	[root@ip-10-1-1-30 ~]#mkdir /2gbdrive
+	[root@ip-10-1-1-30 ~]#mkdir /4gbdrive
+
+	format the volume
+
+	[root@ip-10-1-1-30 ~]#lsblk
+	[root@ip-10-1-1-30 ~]#fdisk /dev/xvdb
+	[root@ip-10-1-1-30 ~]#fdisk /dev/xvdc
+	
+	(partitions are ready now, check with command 'lsblk')
+
+3.Create file system
+	
+	[root@ip-10-1-1-30 ~]#lsblk
+	[root@ip-10-1-1-30 ~]#mkfs.ext3 /dev/xvdb1
+	[root@ip-10-1-1-30 ~]#mkfs.ext3 /dev/xvdc1
+
+	Mount the volumes
+	[root@ip-10-1-1-30 ~]#mount /dev/xvdb1 /2gbdrive/
+	[root@ip-10-1-1-30 ~]#mount /dev/xvdc1 /4gbdrive/
+
+
+InterviewQuestion:
+	When I have taken the Snapshot backup but I unable to restore the machine, why?
+
+	Ans: Snapshot backup is taking the backups of individual volumes i.e., explicitly, not total ec2 machine.
+                          so we couldn't able to restore the ec2 machine. Root volume cannot be added in snapshot.
+
+4.Add some data into these volumes
+	[root@ip-10-1-1-30 ~]#cd /2gbdrive/
+	[root@ip-10-1-1-30 2gbdrive~]# mkdir snap1
+	[root@ip-10-1-1-30 ~]#cd snap1
+
+	[root@ip-10-1-1-30 snap1~]# vim testfile1
+		make some changes in the file and save it.
+
+	[root@ip-10-1-1-30 snap1 ~]# cp testfile1 testfile2
+				    cp testfile1 testfile3
+				    cp testfile1 testfile4
+				    cp testfile1 testfile5
+
+5. Create a snapshot
+	EBSVolumes
+	     create a snapshot of root volume 8gb
+		name="OS-snap1"
+                     -select the 8GB volume -actions-create snapshot
+	        -it creates a snapshot in 'SnapShot'
+
+    -For Snapshot we can't attach the root volume to it, when we are launching the new EC2 instance
+(Note: If we accidentally delete the EC2 machine, with this Snapshot can we take the backup? but we can't recreate the EC2 machine)
+		
+		
+	-Create image using snapshot
+	    select snapshot - create image
+	
+	-It creates an image in AMI
+	  to launch the machine using the image
+	   select the image - launch
+
+The other way also take the snapshot and create instance 
+
+Instances
+1. select the EC2-Machines - image  -create image
+	imagename =MyImageusingInstance
+	select checkbox 'NoReboot'
+
+2. Now, check in AMI, image created.
+
+3. Snapshots
+	Check in snapshots also
+	 individual volumes snapshot will be created.
+
+(Note: Earlier, there an automated lambda script is used to run here to take the snapshots of your EC2 instances between 9-10pm, which is scheduled)
+
+4. Instances.
+
+	Now, terminate the EC2 Instance.
+	
+	Launch the machine using the AMI-image
+	
+	AMI
+	    -select image ---> action - launch
+
+	(this is image level backup of your instance)
+	EC2Instance will be launched now using this image.
+
+5.Connect your EC2 instance through SSH with new publicDNS(ipv4)
+	[root@ip-10-1-1-30 ~]#lsblk
+
+	[root@ip-10-1-1-30 ~]#ls /2gbdrive
+	
+	Need to mount the volume then only we can see the data in the(2gb)drive.which create before 
+                 terminating the instance.
+	Mount the volume
+	[root@ip-10-1-1-30 ~]#mount /dev/xvdb1 /2gbdrive/
+	[root@ip-10-1-1-30 ~]#mount /dev/xvdc1 /4gbdrive/
+
+
+	[root@ip-10-1-1-30 /]# cd /2gbdrive/
+	[root@ip-10-1-1-30 2gbdrive]# ls
+	lost+found  snap1
+	[root@ip-10-1-1-30 2gbdrive]# cd snap1
+	[root@ip-10-1-1-30 snap1]# ls
+
+
+
+Note: We can share our snapshots to other VPCs in other availablility zones
+	
+	AMI
+		select image --> copy AMI-->select availabilityzones
+
+
+
+
+
+
+InterviewQuestions:
+===========
+
+How Many EC2 Instances can we use in a VPC?
+
+Solution:
+	 Initially you are limited to launch 20 EC2 Instances at one time. Maximum VPC  size is 65,536 instances. 
+
+Can we use  of default EBS Snapshots?
+	Solution: Yes, we can provided if it is located in the same region where your VPC is present.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
