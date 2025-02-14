@@ -1,0 +1,46 @@
+Here are some basic Kubernetes questions with their answers:
+
+1. *What is Kubernetes?*  
+   Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications across a cluster of machines.
+
+2. *What is a Pod in Kubernetes?*  
+   A Pod is the smallest and simplest unit in Kubernetes, representing a single instance of a running process in a cluster, which can contain one or more containers.
+
+3. *What is a Node in Kubernetes?*  
+   A Node is a physical or virtual machine in a Kubernetes cluster, where Pods are deployed. Each Node contains the necessary components to run containers, such as the Kubelet and container runtime.
+
+4. *What is a Deployment in Kubernetes?*  
+   A Deployment is a Kubernetes resource that manages the desired state of Pods, ensuring the right number of replicas are running, handling updates, and rolling back in case of failure.
+
+5. *What is a Service in Kubernetes?*  
+   A Service in Kubernetes is an abstraction that defines a set of Pods and provides a stable network endpoint for accessing them, enabling load balancing and service discovery.
+
+6. *What is a ReplicaSet in Kubernetes?*  
+   A ReplicaSet ensures that a specified number of replicas of a Pod are running at any given time, maintaining high availability and scaling of applications.
+
+7. *What is a Namespace in Kubernetes?*  
+   A Namespace is a logical partition within a Kubernetes cluster that enables resource isolation, allowing multiple teams or applications to coexist within the same cluster.
+
+8. *What is a ConfigMap in Kubernetes?*  
+   A ConfigMap is a Kubernetes resource that allows you to store non-sensitive configuration data, such as environment variables, configuration files, or command-line arguments, to be consumed by Pods.
+
+9. *What is a Secret in Kubernetes?*  
+   A Secret is a Kubernetes resource used to store sensitive information, such as passwords or API keys, in a more secure way than plain text in configuration files.
+
+10. *What is Helm in Kubernetes?*  
+   Helm is a package manager for Kubernetes that simplifies the deployment and management of applications by using pre-configured templates called Helm charts.
+
+11. *What is kubectl?*  
+   kubectl is the command-line tool used to interact with Kubernetes clusters, allowing users to create, manage, and troubleshoot resources within the cluster.
+
+12. *What is a StatefulSet in Kubernetes?*  
+   A StatefulSet is a Kubernetes resource for managing stateful applications that require stable, unique network identities, persistent storage, and ordered deployment or scaling.
+
+13. *What is the role of Kubelet?*  
+   Kubelet is an agent that runs on each Node in a Kubernetes cluster, ensuring that containers are running as expected and communicating with the Kubernetes control plane.
+
+14. *What is an Ingress in Kubernetes?*  
+   An Ingress is an API object that manages external access to services in a Kubernetes cluster, typically HTTP, and can provide features like load balancing, SSL termination, and URL routing.
+
+15. *What is a Volume in Kubernetes?*  
+   A Volume is a storage resource in Kubernetes that is used to persist data, allowing containers in a Pod to share storage and ensuring data survives container restarts.
