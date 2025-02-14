@@ -1,1 +1,3 @@
  mvn archetype:generate -DgroupId=amazon -DarchetypeArtifactId=maven-archetype-webapp -DartifactId=amazonApp -DInteractiveMode=false
+groupId: This defines the group or organization to which the project belongs. It's typically a reverse domain name (e.g., com.example, org.apache). I
+artifactId: This is the unique name of the project within the group. It's the name of the jar without version. In your case, amazonApp is the artifact ID, which uniquely identifies the project as "amazonApp" within the "amazon" group.
