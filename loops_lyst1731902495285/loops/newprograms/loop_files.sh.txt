@@ -1,0 +1,10 @@
+#!/bin/bash
+#A script to find the specific files in the provided path
+#
+
+#!/bin/bash
+# For loop with files
+for files in *.sh
+do
+        echo $files
+done

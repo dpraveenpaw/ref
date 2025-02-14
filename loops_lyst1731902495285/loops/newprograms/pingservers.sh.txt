@@ -1,0 +1,36 @@
+#!/bin/bash
+#A script to ping the servers
+#Author:AnilKumar
+#Created: 05-oct-2023
+#
+
+for i in ` cat servers.txt`
+do
+       # ping -c 1 $i
+       #redirect the output into some other file
+        ping -c 1 $i > /home/ec2-user/tmp/pingresults
+        valid=`echo $?`
+        if [ $valid -gt 1 ]; then
+                echo "$i Host is not reachable"
+        else
+                echo "$i Host is Up"
+        fi
+done
+
+
+
+
+execution of program output in new file
+
+[root@ip-172-31-42-66 loops]# sh pingservers.sh > my_stdoutput.txt
+ping: myfile.shs: Name or service not known
+[root@ip-172-31-42-66 loops]# cat my_stdoutput.txt
+localhost Host is Up
+127.0.0.1 Host is Up
+127.0.0.2 Host is Up
+google.com Host is Up
+qedge.com Host is Up
+amazon.in Host is Up
+myfile.shs Host is not reachable
+
+

@@ -1,0 +1,11 @@
+# A Sample script loop through files and directories under a specific directory
+
+
+
+
+i=1
+cd /home/DevOps
+for item in *
+do
+ echo "Item $((i++)) : $item"
+done

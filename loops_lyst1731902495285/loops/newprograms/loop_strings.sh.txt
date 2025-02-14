@@ -1,0 +1,16 @@
+
+#A for loop with conditional statements
+
+
+for automation  in Jenkins Ansible Docker Kubernetes Terraform
+do
+
+        if [[ "$automation" == 'Kubernetes' ]]; then
+
+                break
+        fi
+
+                echo "Automation Tools: $automation"
+
+done
+        echo 'All Done!'
