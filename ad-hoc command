@@ -1,0 +1,4 @@
+ansible all -m yum -a "name=git state=present" --become
+ansible all -m command -a "touch /path/to/your/emptyfile.txt" --become
+ansible all -m copy -a "src=/path/to/sourcefile.txt dest=/path/to/destinationfile.txt" --become
+ansible all -m yum -a "name=java-1.8.0-openjdk state=present" --become
